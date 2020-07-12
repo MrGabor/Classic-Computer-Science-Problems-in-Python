@@ -1,0 +1,100 @@
+#---------------------------------
+# This project returns the nth member of the Fibonacci sequence using recursion + memoization, recursion, and not using recursion. With and without a global cache.  Execution time is measured.
+#---------------------------------
+
+# Project 1.1 - Best solution - Fibonacci Sequence with memoization and no global variable
+def QuikFib(n, cache={0:0, 1:1}):
+    if n in cache: return cache[n]
+    result = QuikFib(n-2,cache) + QuikFib(n-1,cache)
+    cache[n] = result
+    return result
+
+
+# Project 1.1 - Fibonacci Sequence with memoization and global variable
+cache = {}
+def MemoFib(n):
+    if n not in cache:
+        cache[n] = Fib(n)
+    return cache[n]
+
+# Project 1.1 - Fibonacci Sequence with recursion
+def Fib(n):
+    if n in cache:
+        return cache[n]
+    if n < 2:
+        cache[n] = n
+        return n   #base case
+    cache[n] = Fib(n-2) + Fib(n-1)
+    return cache[n]
+
+
+# Project 1.1 - Fibonacci Sequence without recursion
+def NonRecursiveFib(n):
+    if n==0:
+        return 0
+    if n==1:
+        return 1
+    a=0;b=1
+    for c in range(2,n+1):
+        c = a+b
+        a = b
+        b = c
+    return c
+
+import time #to measure and compare execution time
+startTime = time.time()
+print(QuikFib(5))
+print(QuikFib(9))
+print(QuikFib(40))
+print("QuikFib Execution Time = % seconds" % str(time.time()-startTime))
+startTime = time.time()
+print("------------------------")    
+print(MemoFib(5))
+print(MemoFib(9))
+print(MemoFib(40))
+print("MemoFib Execution Time = % seconds" % str(time.time()-startTime))
+startTime = time.time()
+print("------------------------")    
+print(NonRecursiveFib(5))
+print(NonRecursiveFib(9))
+print(NonRecursiveFib(40))
+print("NonRecursiveFib Execution Time = % seconds" % str(time.time()-startTime))
+startTime = time.time()
+print("------------------------")    
+print(Fib(5))
+print(Fib(9))
+print(Fib(40))
+print("Fib Execution Time = % seconds" % str(time.time()-startTime))
+startTime = time.time()
+print("------------------------")    
+
+
+
+''' ----------------output
+5
+34
+102334155
+QuikFib Execution Time = 8.559226989746094e-05econds
+------------------------
+5
+34
+102334155
+MemoFib Execution Time = 4.172325134277344e-05econds
+------------------------
+5
+34
+102334155
+NonRecursiveFib Execution Time = 2.6702880859375e-05econds
+------------------------
+5
+34
+102334155
+Fib Execution Time = 1.7881393432617188e-05econds
+------------------------
+
+''' --------------output
+
+
+
+
+
