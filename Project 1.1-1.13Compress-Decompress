@@ -1,43 +1,46 @@
 # Compress a genetic sequence (comprising of A,C,G,T) into binary
 # then decompress it
 
-
 class CompressedGene:
     def __init__(self, gene: str) -> None:
         self._compress(gene)
-        
-    def _compress(self, gene:str) -> None:
+    
+    def _compress(self, gene: str) -> None:
         self.bit_string: int = 1 #start with sentinel
-        for nucleotide in gene.upper:
-            self.bit_string << 2 #shift left two bits
-            if nucleotide == "A":  #change bits to 00
+        for letter in gene:
+            print(letter)
+            self.bit_string <<=2 #shift left two bits
+            if letter == "A":
                 self.bit_string |= 0b00
-            if nucleotide == "C":  #change bits to 01
+            elif letter == "C":
                 self.bit_string |= 0b01
-            if nucleotide == "G":  #change bits to 10
+            elif letter == "G":
                 self.bit_string |= 0b10
-            if nucleotide == "T":  #change bits to 11
-                self.bit_string |= 0b01
-            else: 
-                raise ValueError("Invalid nucleotide:{}".format(nucleotide))
+            elif letter == "T":
+                self.bit_string |= 0b11
+            else:
+                print("Error, non-recognized nucleotide.")
+        print(gene)
+        print(self.bit_string)
+        
     
     def decompress(self) -> str:
         gene: str = ""
-        for i in range(0,self.bit_string.bit_length() - 1,2): #steps 2 at a time as bits here take 2 steps
-            bits: int = self.bit_string >> i & 0b11 #just get two relevant bits
-                if bits == 0b00: 
-                    str += "A"
-                elif bits == 0b01:
-                    str += "C"
-                elif bits == 0b10:
-                    str += "G"
-                elif bits == 0b11:
-                    str += "T"
-                else:
-                    raise ValueError("Invalid bits:{}".format(bits))
-        return gene [::-1] #reverse slice
+        for twobits in range(0,self.bit_string.bit_length() - 1,2):
+            print(twobits)
+            bits: int = self.bit_string >> twobits & 0b11
+            if bits == 0b00:
+                gene+="A"
+            if bits == 0b01:
+                gene+="C"
+            if bits == 0b10:
+                gene+="G"
+            if bits == 0b11:
+                gene+="T"
+            else:
+                print("Error: unrecognized bit"+bits)
+            print(gene[::-1])
+            return gene[::-1]
     
     def __str__(self) -> str:
-        return self.decompress(str)
-            
-        
+        return self.decompress()
