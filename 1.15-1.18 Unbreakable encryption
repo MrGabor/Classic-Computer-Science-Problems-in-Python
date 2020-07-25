@@ -1,0 +1,30 @@
+# Encrypt a string using a random key
+
+from secrets import token_bytes    #random number generator
+from typing import Tuple
+import math
+
+# creates and returns an integer key of specified length random byte 
+def random_key(length: int) -> int:
+    # generate length random bytes
+    tb: bytes = token_bytes(length)
+    # convert those bytes into a bit string and return it
+    return int.from_bytes(tb, "big")
+    
+# use the XOR logical operator to encrypt a given string    
+def encrypt(original: str) -> Tuple[int, int]:
+    # encode the input string 'original' into bytes
+    original_bytes: bytes = original.encode()
+    # get a random integer key of the same length as 'original' input string
+    dummy: int = random_key(len(original_bytes))
+    # convert the byte encoded 'original' into an integer
+    original_key: int = int.from_bytes(original_bytes, "big")
+    encrypted: int = original_key ^ dummy # XOR
+    return dummy, encrypted
+
+# use the same XOR logical operator to decrypt the encrypted message ("keyTwo")
+def decrypt(keyOne: int, keyTwo: int) -> str:
+    decrypted: int = keyOne ^ keyTwo
+    # to get the length of the integer, use the bit length and base divide by 8, since there are 8 bits per byte.  Add 7 to ensure we don't truncate.
+    temp: bytes = decrypted.to_bytes((decrypted.bit_length()+7)//8,"big")
+    return temp.decode()
