@@ -1,0 +1,13 @@
+# calculate Pi using the Leibniz formula
+# Pi = 4/1 - 4/3 + 4/5 - 4/7 + 4/9 - 4/11 etc
+
+def calcPi(n_terms: int) -> float:
+    numerator: float = 4.0 #this will stay constant
+    denominator: float = 1.0 #this will increment by 2 with each term
+    operation: float = 1.0  #this will alternate as +1 and -1 with each term
+    pi: float = 0.0  #this is the value of pi we are calculating
+    for i in range(n_terms):
+        pi += operation * (numerator / denominator)
+        denominator += 2
+        operation *= -1
+    return pi
